@@ -1,21 +1,17 @@
-import { configDotenv } from 'dotenv';
-import mongoose from 'mongoose';
+// src/config/db.js
+import mongoose from "mongoose"
+import  env  from "./env.js"
 
-configDotenv();
-const dbString = process.env.MONGOSTR
-
-
-
+const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 const mongoconnect = async () => {
-    try {
-         await mongoose.connect(dbString);
-        console.log("Database Conected");
-    } catch (error) {
-        console.log({
-            message:"error while connecting to db",
-            errorMessage:error.message
-        })
-    }
+  try {
+    await mongoose.connect(env.MONGO_URI,clientOptions)
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("✅ Database Connected")
+  } catch (error) {
+    console.error("❌ Database connection failed:", error.message)
+    process.exit(1)
+  }
 }
 
 export default mongoconnect;
