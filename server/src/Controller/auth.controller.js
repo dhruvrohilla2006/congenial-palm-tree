@@ -1,4 +1,5 @@
 import { comparePassword, hashPassword } from "../libs/hash.js";
+import { genToken } from "../libs/token.js";
 import user from "../Model/user.model.js";
 
 export const register = async (request, response) => {
@@ -31,9 +32,13 @@ export const register = async (request, response) => {
 
     await newUser.save();
 
+     const token  = await genToken({
+        userId:newUser._id,
+        role:newUser.role
+      })
     return response.status(201).json({
       message: "User Create Successfully",
-      New_User: newUser,
+      New_User: token,
     });
   } catch (error) {
     console.log(
@@ -64,11 +69,14 @@ export const login = async (request, response) => {
         success: false,
       });
     }
-
+      const token  = await genToken({
+        userId:loginUser._id,
+        role:loginUser.role
+      })
     return response.status(200).json({
       message: "u are loggedIn",
       success: true,
-      logget_user: loginUser,
+      logget_user: token,
     });
   } catch (error) {
     console.log(
@@ -79,3 +87,27 @@ export const login = async (request, response) => {
     });
   }
 };
+
+export const protectedController = async (request,response) => {
+    try {
+        const {role} = request.body
+
+        if(!role){
+         return response.status(400).json({
+        "message":"U are not a registered Or Authorise User to procced",
+        "success":false
+      }) 
+        }
+
+        return  response.status(201).json({
+        "message":"U are a registered Or Authorise User",
+        "success":false
+      })
+    } catch (error) {
+      console.log("Error at protected Controller :\t" + error.message);
+      return response.status(500).json({
+        "message":"Server error",
+        "success":false
+      })
+    }
+}

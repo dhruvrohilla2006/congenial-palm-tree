@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { register, login } from "../Controller/auth.controller.js";
+import { authMiddleware } from "../Middleware/auth.middleware.js";
+import { roleMiddleware } from "../Middleware/role.middleware.js";
 
 const router = Router();
 
@@ -17,6 +19,7 @@ router.get("/", async (request, response) => {
 });
 
 router.get("/register", register);
-router.get("/login", login);
+router.get("/login", authMiddleware,roleMiddleware,login);
+router.get("/checkAuth",authMiddleware,roleMiddleware )
 
 export default router;

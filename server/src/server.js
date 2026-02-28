@@ -3,6 +3,7 @@ import express from "express";
 import mongoconnect from "./config/mongoconnect.js";
 import AuthRoutes from "./Route/auth.Route.js";
 import env from "./config/env.js";
+import { authMiddleware } from "./Middleware/auth.middleware.js";
 
 // config imports
 
