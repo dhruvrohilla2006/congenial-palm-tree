@@ -4,18 +4,25 @@ import mongoconnect from "./config/mongoconnect.js";
 import AuthRoutes from "./Route/auth.Route.js";
 import env from "./config/env.js";
 import { authMiddleware } from "./Middleware/auth.middleware.js";
+import foodRouter from "./Route/food.route.js";
 
 // config imports
 
 const app = express();
-const PORT = env.PORT
+const PORT = env.PORT;
 // app uses
 app.use(express.json());
-app.use("/api/auth",AuthRoutes);
+app.use("/uploads", express.static("uploads"));
+app.use("/api/auth", AuthRoutes);
+app.use("/api/food", foodRouter);
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(400).json({
+    message: err.message,
+  });
+});
 
 // const vaiables
-
-
 
 app.get("/", async (request, response) => {
   try {
@@ -40,4 +47,4 @@ async function server() {
   });
 }
 
-server()
+server();

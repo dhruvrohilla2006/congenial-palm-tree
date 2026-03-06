@@ -19,7 +19,20 @@ router.get("/", async (request, response) => {
 });
 
 router.get("/register", register);
-router.get("/login", authMiddleware,roleMiddleware,login);
-router.get("/checkAuth",authMiddleware,roleMiddleware )
+router.get("/login", login);
+router.get("/checkAuth", authMiddleware, roleMiddleware ,async (request, response) => {
+  try {
+    return response.status(200).json({
+      message: "You are authenticated and have the required role",
+      userId: request.userId,
+      role: request.role
+      });
+  } catch (error) {
+    console.log("Error at checkAuth api /checkAuth");
+    return response.status(500).json({
+      message: "Server Error",
+    });
+  }
+});
 
 export default router;
