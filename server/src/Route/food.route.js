@@ -1,12 +1,19 @@
 import { Router } from "express";
 import upload from "../libs/multer.cjs";
-import { createFood, deleteFood, foodHome, getAllFoods, getFoodById, updateFood } from "../Controller/food.controller.js";
+import {
+  createFood,
+  deleteFood,
+  foodHome,
+  getAllFoods,
+  getFoodById,
+  updateFood,
+} from "../Controller/food.controller.js";
 import { authMiddleware } from "../Middleware/auth.middleware.js";
 import { roleMiddleware } from "../Middleware/role.middleware.js";
 
 const router = Router();
 
-router.post("/foodimage", upload.single("image"), foodHome);
+router.post("/foodimage", upload.array("images"), foodHome);
 router.get("/", getAllFoods);
 router.get("/:id", getFoodById);
 
@@ -15,15 +22,15 @@ router.post(
   "/",
   authMiddleware,
   roleMiddleware,
-  upload.single("image"),
-  createFood
+  upload.array("images"),
+  createFood,
 );
 router.put(
   "/:id",
   authMiddleware,
   roleMiddleware,
   upload.single("image"),
-  updateFood
+  updateFood,
 );
 router.delete("/:id", authMiddleware, roleMiddleware, deleteFood);
 

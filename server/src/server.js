@@ -5,6 +5,7 @@ import AuthRoutes from "./Route/auth.Route.js";
 import env from "./config/env.js";
 import { authMiddleware } from "./Middleware/auth.middleware.js";
 import foodRouter from "./Route/food.route.js";
+import orderRouter from "./Route/order.Route.js";
 
 // config imports
 
@@ -15,12 +16,13 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", AuthRoutes);
 app.use("/api/food", foodRouter);
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(400).json({
-    message: err.message,
-  });
-});
+app.use("/api/order", orderRouter);
+// app.use((err, req, res, next) => {
+//   console.log(err);
+//   res.status(400).json({
+//     message: err.message,
+//   });
+// });
 
 // const vaiables
 
