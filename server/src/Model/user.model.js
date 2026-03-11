@@ -23,8 +23,8 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minLenght:6,
-      maxLenght:15
+      minLenght: 6,
+      maxLenght: 15,
     },
   },
   {
@@ -32,6 +32,6 @@ const userSchema = mongoose.Schema(
   },
 );
 
-const user = mongoose.model("user",userSchema);
+const user = mongoose.model("user", userSchema);
 
 export default user;
