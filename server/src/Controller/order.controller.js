@@ -146,3 +146,41 @@ export const getMyOrders = async (request, response) => {
     });
   }
 };
+
+export const updateOrderStatus = async (request, response) => {
+  try {
+    const { orderId, status } = request.body;
+
+    if (!orderId || !status) {
+      return response.status(400).json({
+        message: "Order ID and status are required",
+        success: false,
+      });
+    }
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return response.status(404).json({
+        message: "Order not found",
+        success: false,
+      });
+    }
+
+    order.status = status;
+
+    await order.save();
+
+    return response.status(200).json({
+      message: "Order status updated successfully",
+      success: true,
+      order,
+    });
+  } catch (error) {
+    console.log("Error at updateOrderStatus api \t" + error);
+    return response.status(500).json({
+      message: "Server Error",
+      success: false,
+    });
+  }
+};

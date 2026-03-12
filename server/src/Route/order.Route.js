@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { roleMiddleware } from "../Middleware/role.middleware.js";
 import { authMiddleware } from "../Middleware/auth.middleware.js";
-import { createOrder, getMyOrders } from "../Controller/order.controller.js";
+import {
+  createOrder,
+  getMyOrders,
+  updateOrderStatus,
+} from "../Controller/order.controller.js";
 
 const router = Router();
 
@@ -11,6 +15,6 @@ router.get("/my", authMiddleware, getMyOrders);
 
 // // Admin-only routes
 // router.get("/", authMiddleware, roleMiddleware, getAllOrders);
-// router.put("/:id", authMiddleware, roleMiddleware, updateOrderStatus);
+router.put("/:id", authMiddleware, roleMiddleware, updateOrderStatus);
 
 export default router;
